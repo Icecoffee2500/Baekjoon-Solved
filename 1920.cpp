@@ -1,87 +1,65 @@
+/** 이 문제는 벡터가 배열보다 일반적으로 10배정도 느리다.라는 것을 알게 되었다. **/
+/** 그리고 이분탐색을 써야 한다. 이분탐색을 쓰면 시간복잡도가 logN으로 준다. **/
+
 #include <iostream>
-#include <string>
-#include <queue>
 #include <vector>
+#include <algorithm>
 
 using namespace std;
 
-bool FindNum(int target, int num, vector<int> v);
+int FindNum(int target, int num, int table[]);
 
 int main()
 {
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
     int N, M;
     int input;
-    priority_queue<int> A;
-    vector<int> sorted_table;
-    string str = "";
+    // vector<int> sorted_table;
 
     // N 입력
     cin >> N;
+    int *table = new int[N+1];
 
-    // 원소들의 정렬을 위해 Priority Queue에 Push
-    for(int i = 0; i < N; i++)
-    {
-        cin >> input;
-        A.push(input);
+    // 원소들을 오름차순으로 정렬 입력
+    for(int i = 0; i < N; i++) {
+        cin >> table[i];
+        // table.push_back(input);
     }
-    // 정렬된 Priority Queue의 원소들을 탐색을 위해 Vector로 옮김
-    for(int i = 0; i < N; i++)
-    {
-        sorted_table.push_back(A.top());
-        A.pop();
-    }
+    sort(table, table + N);
 
     // M 입력
     cin >> M;
 
     // M번동안 입력받은 숫자에 대해서 sorted_table에 있는지 판단
-    for(int i = 0; i < M; i++)
-    {
+    for(int i = 0; i < M; i++) {
         cin >> input;
-        if(FindNum(input, N, sorted_table))
-        {
-            str += "1\n";
-        }
-        else
-        {
-            str += "0\n";
-        }
+        cout << FindNum(input, N, table) << "\n";
     }
-
-    cout << str;
 
     return 0;
 }
-bool FindNum(int target, int num, vector<int> v)
+int FindNum(int target, int num, int table[])
 {
-    int min = 0;
-    int max = num - 1;
-    int avg = (min + max) / 2;
+    int low = 0;
+    int high = num - 1;
+    int mid = (low + high) / 2;
 
-    while(1)
+    while(low <= high)
     {
-        cout << "target : " << target << ", max : " << max  << ", min : " << min << ", avg : " << avg << endl;
-        if(v.at(avg) > target)
-        {
-            min = avg;
+        mid = (low + high) / 2;
+        if(table[mid] == target) {
+            return 1;
         }
-        else if(v.at(avg) <= target)
+        else if(table[mid] > target)
         {
-            max = avg;
+            high = mid - 1;
         }
-        avg = (min + max) / 2;
-        if((avg == min) || (avg == max))
+        else if(table[mid] < target)
         {
-            if(target == v.at(max))
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            low = mid + 1;
         }
-        //cout << "now min is " << min << " and max is " << max << endl;
     }
-
+    return 0;
 }

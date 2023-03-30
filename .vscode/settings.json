@@ -64,6 +64,12 @@
         "cinttypes": "cpp",
         "hashtable": "cpp",
         "queue": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "__bits": "cpp",
+        "__errc": "cpp",
+        "__node_handle": "cpp",
+        "bit": "cpp",
+        "deque": "cpp",
+        "optional": "cpp"
     }
 }
