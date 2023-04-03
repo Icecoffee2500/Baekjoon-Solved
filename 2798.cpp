@@ -1,3 +1,5 @@
+/** 3중 for문을 쓰는 더러운 문제 #bruteForce **/
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -7,49 +9,32 @@ using namespace std;
 int main()
 {
     int num;
-    int max;
-    int input;
-    cin >> num >> max;
-    vector<int> sorted_table;
+    int M;
+    int min = 9999999;
+    int sum, goal;
+    int diff;
+    cin >> num >> M;
+    int table[num];
 
     for(int i = 0; i < num; i++) {
-        cin >> input;
-        sorted_table.push_back(input);
+        cin >> table[i];
     }
-    sort(sorted_table.begin(), sorted_table.end());
+    // sort(table, table + num);
+    
+    for(int i = 0; i < num-2; i++) {
+        for(int j = i + 1; j < num-1; j++) {
+            for(int k = j + 1; k < num; k++) {
+                sum = table[i] + table[j] + table[k];
+                diff = M-sum;
+                if((diff >= 0) && (diff < min)) {
+                    min = diff;
+                    goal = sum;
+                }
+            }
+        }
+    }
 
-    cout << "sorted : ";
-    for(auto ele : sorted_table) {
-        cout << ele << " ";
-    }
-    cout << endl;
-    int sum = 0;
-    while(sorted_table.size() > 3) {
-        sum = 0;
-        int center = sorted_table.size()/2;
-        sum = sorted_table.at(center) + sorted_table.at(center-1) + sorted_table.at(center+1);
-        cout << "center : " << center << ", sum : " << sum << "\n";
-        if(sum > max) {
-            cout << "pop num : " << sorted_table.size()-center-1 << "\n";
-            int iter = sorted_table.size()-center-1;
-            for(int i = 0; i < iter; i++) {
-                sorted_table.pop_back();
-                //cout << "end : " << sorted_table.back() << "\n";
-            }
-            cout << "HIGH! start : " << sorted_table.at(0) << ", end : " << sorted_table.at(sorted_table.size()-1) << "\n";
-        }
-        else if(sum < max) {
-            for(int i = 0; i < center-1; i++) {
-                sorted_table.erase(sorted_table.begin());
-            }
-            cout << "LOW! start : " << sorted_table.at(0) << ", end : " << sorted_table.at(sorted_table.size()-1) << "\n";
-        }
-        else {
-            break;
-        }
-    }
-    sum = sorted_table.at(0) + sorted_table.at(1) + sorted_table.at(2);
-    cout << sum << "\n";
+    cout << goal << "\n";
 
     return 0;
 }
