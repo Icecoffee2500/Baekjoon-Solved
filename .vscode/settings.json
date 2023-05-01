@@ -71,5 +71,6 @@
         "bit": "cpp",
         "deque": "cpp",
         "optional": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": true
 }
